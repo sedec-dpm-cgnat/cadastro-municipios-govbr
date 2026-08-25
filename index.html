@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071d41" />
+    <meta name="description" content="Protótipo Gov.br do Cadastro Nacional de Municípios com Áreas Suscetíveis." />
+    <title>Cadastro Nacional de Municípios | Protótipo Gov.br</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rawline:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="br-skiplink" href="#main-content">Ir para o conteúdo</a>
+
+    <header class="br-header gov-header" aria-label="Cabeçalho do serviço">
+      <div class="container-lg header-top">
+        <div class="government-signature">
+          <a class="gov-logo" href="https://www.gov.br/" target="_blank" rel="noreferrer" aria-label="gov.br"><img src="https://www.gov.br/ds/assets/img/govbr-logo.png" alt="gov.br" /></a>
+          <span class="signature-divider" aria-hidden="true"></span>
+          <div class="agency-signature"><span>MINISTÉRIO DA INTEGRAÇÃO E DO DESENVOLVIMENTO REGIONAL</span><strong>SEDEC · DPM</strong></div>
+        </div>
+        <div class="header-actions">
+          <button class="br-button circle" type="button" id="accessibility-button" aria-label="Opções de acessibilidade">A</button>
+          <button class="br-button secondary small" type="button" id="header-public">Consulta pública</button>
+          <button class="br-button primary small" type="button" id="header-login">Entrar</button>
+        </div>
+      </div>
+      <div class="agency-bar">
+        <div class="container-lg agency-bar-line">
+          <div class="agency-identity">
+            <img src="https://sedec-dpm-cgnat.github.io/tutorial-trigrs/logos/DPM-Circular.png" alt="Departamento de Prevenção e Mitigação de Desastres" />
+            <div><span>Cadastro Nacional</span><strong>Municípios com áreas suscetíveis</strong></div>
+          </div>
+          <button class="br-button secondary menu-button" type="button" id="menu-button" aria-expanded="false" aria-controls="main-nav">Menu <span aria-hidden="true">☰</span></button>
+        </div>
+      </div>
+      <nav class="container-lg main-nav" id="main-nav" aria-label="Navegação principal">
+        <a href="#inicio" class="nav-link active" data-scroll="inicio">Início</a>
+        <a href="#transparencia" class="nav-link" data-scroll="transparencia">Transparência</a>
+        <a href="#acesso" class="nav-link" data-scroll="acesso">Acesso ao sistema</a>
+        <a href="#orientacoes" class="nav-link" data-scroll="orientacoes">Orientações</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <div class="container-lg">
+        <nav class="br-breadcrumb" aria-label="Você está aqui">
+          <ol class="crumb-list"><li><a href="#inicio">Página inicial</a></li><li><span aria-current="page">Cadastro Nacional de Municípios</span></li></ol>
+        </nav>
+
+        <section class="br-message info service-alert" role="status">
+          <div class="message-icon" aria-hidden="true">i</div>
+          <div><strong>Protótipo de adequação ao Padrão Digital Gov.br</strong><p>Esta versão demonstra a experiência, os componentes e as regras de acesso que poderão orientar a implementação institucional.</p></div>
+        </section>
+
+        <section class="service-hero" id="inicio">
+          <div class="hero-copy">
+            <span class="br-tag status-tag">SERVIÇO PÚBLICO DIGITAL · VERSÃO CONCEITUAL</span>
+            <h1><span>Cadastro Nacional</span> de Municípios</h1>
+            <p class="hero-subtitle">Municípios com Áreas Suscetíveis à Ocorrência de Deslizamentos de Grande Impacto, Inundações Bruscas ou Processos Geológicos ou Hidrológicos Correlatos.</p>
+            <p class="hero-text">Um serviço para inscrição municipal, acompanhamento das responsabilidades previstas no Decreto nº 10.692/2021 e consulta pública das indicações técnicas.</p>
+            <div class="hero-actions">
+              <button class="br-button primary large" type="button" data-scroll="acesso">Acessar o sistema <span aria-hidden="true">→</span></button>
+              <button class="br-button secondary large" type="button" data-scroll="transparencia">Consultar transparência</button>
+            </div>
+            <div class="hero-links"><a href="https://www.gov.br/casacivil/pt-br/assuntos/cadastro-de-municipios-suscetiveis-a-eventos-de-enxurradas-e-inundacoes" target="_blank" rel="noreferrer">Notas técnicas da Casa Civil ↗</a><a href="https://www.gov.br/ds/home" target="_blank" rel="noreferrer">Padrão Digital Gov.br ↗</a></div>
+          </div>
+          <div class="hero-summary br-card">
+            <div class="summary-head"><div><span class="eyebrow">VISÃO NACIONAL</span><h2>Informação para prevenir</h2></div><span class="br-tag neutral-tag">Acesso aberto</span></div>
+            <div class="summary-number">2.095<small>municípios indicados no recorte técnico</small></div>
+            <div class="summary-grid"><div><strong>5</strong><span>cadastros demonstrativos</span></div><div><strong>7</strong><span>responsabilidades pós-inscrição</span></div><div><strong>1</strong><span>pacote inicial de comprovação</span></div><div><strong>4</strong><span>perfis de acesso</span></div></div>
+            <p class="summary-note"><span aria-hidden="true">✓</span> A consulta às listas e ao mapa não exige autenticação.</p>
+          </div>
+        </section>
+
+        <section class="access-section" id="acesso" aria-labelledby="access-title">
+          <div class="section-heading"><div><span class="eyebrow">ACESSO AO SISTEMA</span><h2 id="access-title">Escolha o perfil de acesso</h2><p>O perfil define o escopo de dados e as transações disponíveis depois da autenticação.</p></div><span class="br-tag info-tag">Login gov.br</span></div>
+          <div class="access-layout">
+            <div class="profile-grid" role="radiogroup" aria-label="Perfis de acesso">
+              <label class="profile-option br-card"><input type="radio" name="profile" value="municipal" /><span class="profile-symbol" aria-hidden="true">⌂</span><span><strong>Município</strong><small>Inscrição, manifestação, documentos e obrigações.</small></span></label>
+              <label class="profile-option br-card"><input type="radio" name="profile" value="estadual" /><span class="profile-symbol" aria-hidden="true">◈</span><span><strong>Estado</strong><small>Acompanhamento regional e apoio aos municípios.</small></span></label>
+              <label class="profile-option br-card"><input type="radio" name="profile" value="federal" /><span class="profile-symbol" aria-hidden="true">✦</span><span><strong>União</strong><small>Gestão nacional, análise e administração do cadastro.</small></span></label>
+              <label class="profile-option br-card"><input type="radio" name="profile" value="controle" /><span class="profile-symbol" aria-hidden="true">◌</span><span><strong>Controle e fiscalização</strong><small>Consulta, auditoria e exportação de dados públicos.</small></span></label>
+            </div>
+            <div class="access-continue br-card" aria-live="polite">
+              <span class="eyebrow">PRÓXIMA ETAPA</span><h3 id="selected-profile-title">Selecione um perfil</h3><p id="selected-profile-copy">A autenticação será liberada após a escolha do perfil e direcionará o usuário ao escopo correspondente.</p>
+              <button class="br-button primary" type="button" id="govbr-login" disabled>Continuar com gov.br <span aria-hidden="true">→</span></button>
+              <p class="security-note"><span aria-hidden="true">🔒</span> Na implementação, a autenticação deverá usar o Login Único gov.br em HTTPS, com autorização e perfis separados.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="public-section" id="transparencia" aria-labelledby="transparency-title">
+          <div class="section-heading"><div><span class="eyebrow">PAINEL ABERTO · VISÃO NACIONAL</span><h2 id="transparency-title">Transparência do cadastro</h2><p>Veja a diferença entre indicação técnica, inscrição efetivada e processo em preenchimento.</p></div><span class="br-tag success-tag"><span class="status-dot"></span> Dados públicos</span></div>
+          <div class="kpi-grid"><article class="br-card kpi"><span>Municípios indicados</span><strong>2.095</strong><small>universo técnico do protótipo</small></article><article class="br-card kpi"><span>Cadastros concluídos</span><strong>5</strong><small>recorte demonstrativo</small></article><article class="br-card kpi"><span>Em preenchimento</span><strong>50</strong><small>processos municipais</small></article><article class="br-card kpi"><span>Fontes principais</span><strong>3</strong><small>Casa Civil · IBGE · SGB</small></article></div>
+          <div class="map-card br-card">
+            <div class="map-card-head"><div><h3>Onde estão os municípios?</h3><p>Poligonal vermelha: indicado · hachura vermelha: cadastrado · contorno preto: demais municípios.</p></div><span class="map-source">Leaflet · malha IBGE</span></div>
+            <div class="map-toolbar" role="tablist" aria-label="Filtros do mapa"><button class="br-button tertiary small active" type="button" data-map-filter="all">Todos</button><button class="br-button tertiary small" type="button" data-map-filter="indicated">Indicados</button><button class="br-button tertiary small" type="button" data-map-filter="registered">Cadastrados</button><button class="br-button tertiary small" type="button" data-map-filter="other">Demais municípios</button><span class="map-count" id="map-count">2.095 indicados · 5 cadastrados</span></div>
+            <div id="national-map" class="national-map" role="application" aria-label="Mapa Leaflet dos municípios indicados e cadastrados"></div>
+            <div class="map-legend"><span><i class="legend-line indicated"></i> Indicados</span><span><i class="legend-line registered"></i> Cadastrados</span><span><i class="legend-line other"></i> Demais municípios</span><small>Limites estaduais e municipais: IBGE</small></div>
+          </div>
+          <div class="public-data-grid"><div class="br-card explanation-card"><span class="eyebrow">COMO INTERPRETAR</span><h3>Indicação não é cadastro</h3><p>A indicação é uma identificação técnica da União. A inscrição é um ato posterior do município, condicionado à manifestação quando previsto no Decreto.</p><a href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/decreto/d10692.htm" target="_blank" rel="noreferrer">Consultar o Decreto nº 10.692/2021 ↗</a></div><div class="br-card download-card"><span class="eyebrow">DADOS ABERTOS</span><h3>Listas para análise</h3><p>A versão integrada deverá disponibilizar CSV, GeoJSON e API pública com data de atualização e fonte.</p><button class="br-button secondary small" type="button" id="download-demo">Baixar recorte demonstrativo ↓</button></div></div>
+        </section>
+
+        <section class="workspace-section" id="workspace" hidden aria-labelledby="workspace-title">
+          <div class="section-heading"><div><span class="eyebrow">ÁREA RESTRITA · PROTÓTIPO</span><h2 id="workspace-title">Área de trabalho</h2><p id="workspace-copy">Escopo carregado de acordo com o perfil selecionado.</p></div><button class="br-button secondary small" type="button" id="back-public">Voltar à consulta pública</button></div>
+          <div class="br-message success workspace-message" role="status"><div class="message-icon" aria-hidden="true">✓</div><div><strong id="workspace-role">Perfil autenticado</strong><p id="workspace-scope">As permissões são aplicadas por perfil, transação e escopo territorial.</p></div></div>
+          <div class="workspace-grid"><article class="br-card permissions-card"><span class="eyebrow">PERMISSÕES DO PERFIL</span><h3>O que este usuário pode fazer</h3><ul id="permission-list"></ul></article><article class="br-card audit-card"><span class="eyebrow">RASTREABILIDADE</span><h3>Segurança por desenho</h3><div class="audit-row"><span>Identidade</span><strong>gov.br</strong></div><div class="audit-row"><span>Autorização</span><strong>RBAC + escopo</strong></div><div class="audit-row"><span>Auditoria</span><strong>Eventos imutáveis</strong></div><div class="audit-row"><span>Dados públicos</span><strong>API + exportação</strong></div></article></div>
+          <div class="municipal-workspace br-card" id="municipal-workspace" hidden>
+            <div class="workspace-card-head"><div><span class="eyebrow">JORNADA MUNICIPAL</span><h3>Cadastro inicial em quatro etapas</h3><p>Fluxo desenhado com o componente Wizard do Design System.</p></div><span class="br-tag warning-tag">Em preenchimento</span></div>
+            <ol class="br-step wizard-steps" aria-label="Etapas do cadastro"><li class="step-complete"><span>1</span><strong>Identificação</strong><small>Concluída</small></li><li class="step-current"><span>2</span><strong>Comprovação</strong><small>Em andamento</small></li><li><span>3</span><strong>Manifestação</strong><small>Pendente</small></li><li><span>4</span><strong>Revisão e envio</strong><small>Pendente</small></li></ol>
+            <div class="form-grid"><div class="br-input"><label for="municipality">Município</label><input id="municipality" value="São Sebastião / SP · IBGE 3550704" readonly /></div><div class="br-input"><label for="municipal-responsible">Responsável pelo cadastro</label><input id="municipal-responsible" placeholder="Nome e função" /></div></div>
+            <div class="br-upload gov-upload"><label class="upload-label" for="risk-file"><span>Envio de arquivo de comprovação</span></label><input class="upload-input" id="risk-file" type="file" accept=".zip,.geojson,.json,.pdf,.shp,.gpkg" /><p class="upload-hint">Preferencialmente ZIP. O pacote pode conter inventário, relação georreferenciada e documentos expedidos por órgãos públicos ou agentes habilitados.</p><div id="file-list" class="file-list" aria-live="polite"></div></div>
+            <div class="br-message warning compact-message"><div class="message-icon" aria-hidden="true">!</div><div><strong>Atesto condicional</strong><p>O campo de manifestação deverá ser exibido somente se o código IBGE constar na lista vigente de municípios indicados.</p><label class="br-checkbox"><input type="checkbox" id="attestation" /><span class="checkmark"></span><span>Atesto que o município está de acordo com a indicação técnica.</span></label></div></div>
+            <div class="workspace-actions"><button class="br-button primary" type="button" id="save-demo">Salvar rascunho</button><button class="br-button secondary" type="button" id="submit-demo">Revisar e enviar</button></div>
+          </div>
+          <div class="readonly-workspace br-card" id="readonly-workspace" hidden><div class="workspace-card-head"><div><span class="eyebrow">PAINEL DE ACOMPANHAMENTO</span><h3 id="readonly-title">Visão de acompanhamento</h3><p id="readonly-copy">Dados exibidos conforme o escopo institucional autorizado.</p></div><span class="br-tag info-tag">Somente leitura</span></div><div class="readonly-metrics"><div><strong>2.095</strong><span>indicados</span></div><div><strong>5</strong><span>cadastrados</span></div><div><strong>50</strong><span>em preenchimento</span></div><div><strong>API</strong><span>dados abertos</span></div></div><div class="readonly-actions"><button class="br-button secondary small" type="button" data-scroll="transparencia">Abrir mapa nacional</button><button class="br-button secondary small" type="button" id="export-role-data">Exportar visão autorizada ↓</button></div></div>
+        </section>
+
+        <section class="orientation-section" id="orientacoes" aria-labelledby="orientation-title">
+          <div class="section-heading"><div><span class="eyebrow">ORIENTAÇÕES PARA IMPLEMENTAÇÃO</span><h2 id="orientation-title">Uma experiência simples e rastreável</h2><p>O cadastro deve pedir somente o necessário e explicar cada consequência para o município.</p></div></div>
+          <div class="orientation-grid"><article class="br-card"><span class="card-number">01</span><h3>Autentique uma vez</h3><p>Login gov.br, sessão segura e vínculo posterior do usuário ao município ou órgão.</p></article><article class="br-card"><span class="card-number">02</span><h3>Autorize por escopo</h3><p>Perfis, transações e território determinam o que cada pessoa pode visualizar ou alterar.</p></article><article class="br-card"><span class="card-number">03</span><h3>Publique com transparência</h3><p>Indicados, cadastrados e documentos públicos devem ter fonte, versão e data de atualização.</p></article></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="br-footer gov-footer"><div class="container-lg"><div class="footer-main"><div><strong>Cadastro Nacional de Municípios</strong><p>Protótipo de adequação ao Padrão Digital Gov.br · SEDEC/DPM</p></div><div><a href="https://www.gov.br/ds/home" target="_blank" rel="noreferrer">Design System Gov.br ↗</a><a href="https://www.gov.br/governodigital/pt-br/estrategias-e-governanca-digital/transformacao-digital/servico-de-integracao-aos-produtos-de-identidade-digital-gov.br" target="_blank" rel="noreferrer">Integração gov.br ↗</a></div></div><div class="footer-bottom"><span>Versão Gov.br · 0.1</span><span>Dados do mapa: IBGE · indicação técnica: Casa Civil</span></div></div></footer>
+
+    <div class="br-modal" id="demo-modal" hidden><div class="modal-scrim"></div><div class="modal-content br-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="br-button circle modal-close" type="button" id="modal-close" aria-label="Fechar">×</button><span class="eyebrow">PROTÓTIPO</span><h2 id="modal-title">Ação simulada</h2><p id="modal-copy">Nenhum dado foi enviado. A versão integrada conectará esta ação ao serviço institucional.</p><button class="br-button primary" type="button" id="modal-ok">Entendi</button></div></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="data/indicados-2095.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
