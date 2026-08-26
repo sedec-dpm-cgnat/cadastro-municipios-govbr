@@ -51,6 +51,12 @@ As regras são centralizadas em `wizardRequirements(step)`. Os botões de avanç
 
 O botão `Reiniciar simulação` executa `resetMunicipalWizard()`, limpa campos, anexos e atesto e retorna o Wizard para a etapa 1. Os botões de demonstração criam objetos `File` locais para permitir o teste sem transmitir arquivos.
 
+### 4.1. Confirmação pós-envio
+
+Depois que a validação da etapa 4 é concluída, `setupProfiles()` oculta o elemento `#municipal-wizard` e exibe `#submission-confirmation`. A tela apresenta situação “Enviado para análise”, protocolo demonstrativo e a mensagem de que um e-mail de confirmação foi enviado ao endereço associado à identidade gov.br do responsável.
+
+No protótipo, essa mensagem não dispara uma comunicação real. Na produção, a API deverá criar o protocolo, persistir o evento, enfileirar a notificação e registrar sucesso ou falha da entrega sem bloquear a consulta do protocolo pelo município.
+
 ## 5. Perfis e autenticação simulada
 
 `profiles` contém os quatro perfis demonstrados: Município, Estado, União e Controle e fiscalização. A função `setupProfiles()` atualiza o escopo, as permissões e o painel exibido.

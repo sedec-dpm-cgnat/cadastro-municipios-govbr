@@ -127,6 +127,8 @@ function setWizardStep(step) {
 }
 
 function resetMunicipalWizard() {
+  $('#municipal-wizard').hidden = false;
+  $('#submission-confirmation').hidden = true;
   $('#municipal-responsible').value = '';
   $('#formal-act-file').value = '';
   $('#risk-file').value = '';
@@ -161,6 +163,8 @@ function setupMunicipalWizard() {
   });
   $('#previous-review').addEventListener('click', () => setWizardStep(3));
   $('#reset-demo').addEventListener('click', resetMunicipalWizard);
+  $('#restart-after-submit').addEventListener('click', resetMunicipalWizard);
+  $('#return-public-after-submit').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
   $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
   $('#attestation').addEventListener('change', () => updateWizardValidation(false));
   setWizardStep(1);
@@ -221,7 +225,9 @@ function setupProfiles() {
       return;
     }
     $('#wizard-status').textContent = 'Enviado para análise';
-    openModal('Cadastro enviado · simulação', 'O protótipo gerou um envio demonstrativo. Na versão integrada, o município receberá protocolo e o processo seguirá para análise, complementação ou efetivação conforme as regras de negócio.');
+    $('#municipal-wizard').hidden = true;
+    $('#submission-confirmation').hidden = false;
+    $('#submission-confirmation').focus();
   });
   $('#export-role-data').addEventListener('click', () => openModal('Exportação controlada', 'A API deverá aplicar o mesmo escopo do perfil antes de gerar CSV, GeoJSON ou relatório.'));
   setupMunicipalWizard();

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rawline:wght@400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-    <link rel="stylesheet" href="styles.css?v=20260826-prototipo-5" />
+    <link rel="stylesheet" href="styles.css?v=20260826-prototipo-6" />
   </head>
   <body>
     <a class="br-skiplink" href="#main-content">Ir para o conteúdo</a>
@@ -112,6 +112,7 @@
           <div class="workspace-grid"><article class="br-card permissions-card"><span class="eyebrow">PERMISSÕES DO PERFIL</span><h3>O que este usuário pode fazer</h3><ul id="permission-list"></ul></article><article class="br-card audit-card"><span class="eyebrow">RASTREABILIDADE</span><h3>Segurança por desenho</h3><div class="audit-row"><span>Identidade</span><strong>gov.br</strong></div><div class="audit-row"><span>Autorização</span><strong>RBAC + escopo</strong></div><div class="audit-row"><span>Auditoria</span><strong>Eventos imutáveis</strong></div><div class="audit-row"><span>Dados públicos</span><strong>API + exportação</strong></div></article></div>
           <div class="municipal-workspace br-card" id="municipal-workspace" hidden>
             <div class="workspace-card-head"><div><span class="eyebrow">JORNADA MUNICIPAL</span><h3>Cadastro inicial em quatro etapas</h3><p>Fluxo desenhado com o componente Wizard do Design System. Avance somente quando os requisitos da etapa estiverem atendidos.</p></div><span class="br-tag warning-tag" id="wizard-status">Em preenchimento</span></div>
+            <div id="municipal-wizard">
             <ol class="br-step wizard-steps" aria-label="Etapas do cadastro"><li data-wizard-indicator="1" class="step-current"><span>1</span><strong>Identificação</strong><small>Em andamento</small></li><li data-wizard-indicator="2"><span>2</span><strong>Comprovação</strong><small>Pendente</small></li><li data-wizard-indicator="3"><span>3</span><strong>Manifestação</strong><small>Pendente</small></li><li data-wizard-indicator="4"><span>4</span><strong>Revisão e envio</strong><small>Pendente</small></li></ol>
 
             <div class="form-grid"><div class="br-input"><label for="municipality">Município</label><input id="municipality" value="São Sebastião / SP · IBGE 3550704" readonly /></div><div class="br-input"><label for="municipal-responsible">Responsável pelo cadastro</label><input id="municipal-responsible" value="" placeholder="Nome e função" required /></div></div>
@@ -145,6 +146,17 @@
               <div class="br-message warning compact-message"><div class="message-icon" aria-hidden="true">!</div><div><strong>Após o envio</strong><p>O cadastro ficará disponível para análise. A efetivação e a publicação dependem da conferência administrativa e técnica.</p></div></div>
               <div class="workspace-actions"><button class="br-button secondary" type="button" id="previous-review">← Voltar</button><button class="br-button primary" type="button" id="submit-demo">Enviar cadastro <span aria-hidden="true">→</span></button></div>
             </div>
+            </div>
+            <section class="submission-confirmation br-card" id="submission-confirmation" hidden aria-labelledby="submission-confirmation-title" tabindex="-1">
+              <div class="confirmation-mark" aria-hidden="true">✓</div>
+              <span class="eyebrow">CONFIRMAÇÃO DE ENVIO</span>
+              <h3 id="submission-confirmation-title">Cadastro enviado para análise</h3>
+              <p class="confirmation-lead">O cadastro demonstrativo foi recebido e está pronto para a etapa de análise administrativa e técnica.</p>
+              <div class="br-message success confirmation-email" role="status"><div class="message-icon" aria-hidden="true">✓</div><div><strong>E-mail de confirmação enviado</strong><p>Um e-mail de confirmação foi enviado para o endereço associado à identidade gov.br do usuário responsável pelo cadastro.</p></div></div>
+              <div class="confirmation-meta"><span>Protocolo demonstrativo</span><strong>CNM-SIM-2026-0001</strong></div>
+              <p class="prototype-note"><strong>Simulação:</strong> na versão integrada, o sistema exibirá o protocolo real e registrará o envio e a notificação na trilha de auditoria. Nenhum e-mail é enviado por este protótipo.</p>
+              <div class="confirmation-actions"><button class="br-button secondary" type="button" id="return-public-after-submit">Voltar à consulta pública</button><button class="br-button primary" type="button" id="restart-after-submit">Iniciar nova simulação</button></div>
+            </section>
           </div>
           <div class="readonly-workspace br-card" id="readonly-workspace" hidden><div class="workspace-card-head"><div><span class="eyebrow">PAINEL DE ACOMPANHAMENTO</span><h3 id="readonly-title">Visão de acompanhamento</h3><p id="readonly-copy">Dados exibidos conforme o escopo institucional autorizado.</p></div><span class="br-tag info-tag">Somente leitura</span></div><div class="readonly-metrics"><div><strong>2.095</strong><span>indicados</span></div><div><strong>5</strong><span>cadastrados</span></div><div><strong>50</strong><span>em preenchimento</span></div><div><strong>API</strong><span>dados abertos</span></div></div><div class="readonly-actions"><button class="br-button secondary small" type="button" data-scroll="transparencia">Abrir mapa nacional</button><button class="br-button secondary small" type="button" id="export-role-data">Exportar visão autorizada ↓</button></div></div>
         </section>
@@ -160,7 +172,7 @@
             <details class="br-card rule-card"><summary><span class="rule-code">RN05</span><strong>Comprovação obrigatória</strong></summary><p>Todo pedido deve anexar inventário ou documento oficial que comprove a existência de áreas de risco, incluindo relação georreferenciada quando aplicável.</p></details>
             <details class="br-card rule-card"><summary><span class="rule-code">RN06</span><strong>Manifestação condicional</strong></summary><p>Quando o município estiver na lista vigente de indicados, a inscrição somente avança com manifestação prévia do município, registrada pelo responsável autenticado.</p></details>
             <details class="br-card rule-card"><summary><span class="rule-code">RN07</span><strong>Avanço do Wizard</strong></summary><p>O sistema não permite avançar sem responsável, ato formal, arquivo de comprovação e, quando aplicável, atesto na etapa de manifestação. O rascunho pode ser salvo e retomado.</p></details>
-            <details class="br-card rule-card"><summary><span class="rule-code">RN08</span><strong>Análise e situação</strong></summary><p>Após o envio, o pedido recebe protocolo e situação “Em análise”. A equipe competente pode efetivar, solicitar complementação ou registrar indeferimento, sempre com data e justificativa.</p></details>
+            <details class="br-card rule-card"><summary><span class="rule-code">RN08</span><strong>Confirmação e análise</strong></summary><p>Após o envio, o sistema apresenta confirmação, gera protocolo, informa o envio do e-mail ao usuário responsável e muda a situação para “Em análise”. A equipe competente pode efetivar, solicitar complementação ou registrar indeferimento, sempre com data e justificativa.</p></details>
             <details class="br-card rule-card"><summary><span class="rule-code">RN09</span><strong>Obrigações após inclusão</strong></summary><p>O município incluído deve acompanhar as obrigações do art. 5º: órgão de defesa civil, mapeamento georreferenciado, plano de contingência em até um ano, obras e serviços, fiscalização, carta geotécnica e atualização anual.</p></details>
             <details class="br-card rule-card"><summary><span class="rule-code">RN10</span><strong>Transparência e auditoria</strong></summary><p>Indicados, cadastrados e atualizações públicas devem informar fonte, versão e data. Documentos e decisões devem manter histórico, integridade e trilha de auditoria.</p></details>
           </div>
@@ -178,8 +190,8 @@
     <div class="br-modal" id="demo-modal" hidden><div class="modal-scrim"></div><div class="modal-content br-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="br-button circle modal-close" type="button" id="modal-close" aria-label="Fechar">×</button><span class="eyebrow">PROTÓTIPO</span><h2 id="modal-title">Ação simulada</h2><p id="modal-copy">Nenhum dado foi enviado. A versão integrada conectará esta ação ao serviço institucional.</p><button class="br-button primary" type="button" id="modal-ok">Entendi</button></div></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="data/indicados-2095.js?v=20260826-prototipo-5"></script>
+    <script src="data/indicados-2095.js?v=20260826-prototipo-6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.js"></script>
-    <script src="app.js?v=20260826-prototipo-5"></script>
+    <script src="app.js?v=20260826-prototipo-6"></script>
   </body>
 </html>

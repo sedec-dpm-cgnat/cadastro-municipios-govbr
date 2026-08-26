@@ -74,10 +74,11 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 ### RN08 — Revisão, protocolo e análise
 
 1. Antes do envio, o sistema deve apresentar resumo do município, responsável, origem, arquivo e manifestação.
-2. O envio deve gerar protocolo único e registrar versão do processo.
-3. Após o envio, a situação deve mudar para **Em análise**.
-4. A área competente pode efetivar, solicitar complementação ou indeferir, sempre com usuário, data, justificativa e documentos relacionados.
-5. O município não deve conseguir apagar versões ou decisões; correções devem gerar nova versão e histórico.
+2. O envio deve gerar protocolo único, registrar versão do processo e apresentar uma tela de confirmação.
+3. A tela de confirmação deve informar que um e-mail de confirmação foi enviado ao endereço associado à identidade gov.br do usuário responsável.
+4. Após o envio, a situação deve mudar para **Em análise**.
+5. A área competente pode efetivar, solicitar complementação ou indeferir, sempre com usuário, data, justificativa e documentos relacionados.
+6. O município não deve conseguir apagar versões ou decisões; correções devem gerar nova versão e histórico.
 
 ### RN09 — Obrigações após a inclusão
 
