@@ -47,7 +47,7 @@ O estado do protótipo é mantido pela variável `currentWizardStep`:
 | 3. Manifestação | Atesto condicional da indicação técnica | Exigido somente se o código IBGE estiver em `indicatedCodes`. Para município não indicado, a manifestação não é cobrada. |
 | 4. Revisão e efetivação | Resumo, checklist e confirmação demonstrativa | Todas as validações anteriores atendidas. |
 
-As regras são centralizadas em `wizardRequirements(step)`. Os botões de avanço chamam `updateWizardValidation(...)` antes de executar `setWizardStep(...)`. Assim, a etapa 2 não valida o atesto; essa validação ocorre exclusivamente ao avançar da etapa 3 para a revisão.
+As regras são centralizadas em `wizardRequirements(step)`. Os botões de avanço chamam `updateWizardValidation(...)` antes de executar `setWizardStep(...)`. Assim, a etapa 2 não valida o atesto; na etapa 3, o botão `#next-review` permanece desabilitado até o checkbox da manifestação obrigatória ser marcado.
 
 O botão `Reiniciar simulação` executa `resetMunicipalWizard()`, limpa campos, anexos e atesto e retorna o Wizard para a etapa 1. Os botões de demonstração criam objetos `File` locais para permitir o teste sem transmitir arquivos.
 

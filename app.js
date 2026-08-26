@@ -107,22 +107,20 @@ function updateReviewSummary() {
   const attestationRequired = indicatedCodes.has(demoMunicipalityCode);
   $('#review-attestation').hidden = !attestationRequired;
   if (attestationRequired) $('#review-attestation').innerHTML = `<span aria-hidden="true">${$('#attestation').checked ? '✓' : '!'}</span> ${$('#attestation').checked ? 'Manifestação prévia registrada' : 'Manifestação prévia pendente'}`;
-  $('#manifestation-description').textContent = attestationRequired ? 'A manifestação prévia ficará vinculada ao município, à identidade gov.br, ao ato de designação e à versão do arquivo enviado.' : 'Como o município não está indicado, a manifestação prévia não é exigida. A comprovação e o ato de designação continuam vinculados ao processo.';
 }
 
 function updateWizardValidation(show = false, step = currentWizardStep) {
   const result = wizardRequirements(step);
   const identificationBox = $('#identification-validation');
   const wizardBox = $('#wizard-validation');
-  const manifestationBox = $('#manifestation-validation');
   identificationBox.hidden = true;
   wizardBox.hidden = true;
-  manifestationBox.hidden = true;
   if (!show || result.valid) {
     return result;
   }
-  const box = step === 1 ? identificationBox : step === 3 ? manifestationBox : wizardBox;
-  const copy = step === 1 ? $('#identification-validation-copy') : step === 3 ? $('#manifestation-validation-copy') : $('#wizard-validation-copy');
+  const box = step === 1 ? identificationBox : step === 3 ? null : wizardBox;
+  const copy = step === 1 ? $('#identification-validation-copy') : $('#wizard-validation-copy');
+  if (!box) return result;
   copy.textContent = `Para continuar, ${result.requirements.join('; ')}.`;
   box.hidden = false;
   return result;
@@ -196,6 +194,10 @@ function openObligationsPanel() {
   $('#obligations-workspace').focus();
 }
 
+function updateManifestationAction() {
+  $('#next-review').disabled = indicatedCodes.has(demoMunicipalityCode) && !$('#attestation').checked;
+}
+
 function resetMunicipalWizard() {
   $('#municipal-wizard').hidden = false;
   $('#submission-confirmation').hidden = true;
@@ -208,6 +210,7 @@ function resetMunicipalWizard() {
   $('#formal-act-file-list').textContent = '';
   $('#file-list').textContent = '';
   $('#attestation').checked = false;
+  updateManifestationAction();
   setWizardStep(1);
 }
 
@@ -243,7 +246,8 @@ function setupMunicipalWizard() {
   $('#back-public-after-obligations').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
   $('#save-obligations-demo').addEventListener('click', () => openModal('Atualização salva', 'A simulação atualizou somente a interface. Na versão integrada, cada documento, situação e observação será versionado com data, usuário, hash e trilha de auditoria.'));
   $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
-  $('#attestation').addEventListener('change', () => updateWizardValidation(false));
+  $('#attestation').addEventListener('change', () => { updateWizardValidation(false); updateManifestationAction(); });
+  updateManifestationAction();
   setWizardStep(1);
 }
 
