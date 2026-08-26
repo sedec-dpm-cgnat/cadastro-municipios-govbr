@@ -4,6 +4,12 @@ Segunda versão isolada do protótipo do Cadastro Nacional de Municípios com Á
 
 Esta pasta não altera nem substitui o protótipo apresentado anteriormente em `CNM-RISCO`. Ela demonstra a mesma jornada com componentes e princípios do [Padrão Digital Gov.br](https://www.gov.br/ds/home), versão 3.7.0, e foi preparada para servir como referência visual e técnica à equipe de TI.
 
+## Acesso rápido
+
+> **[Abrir o protótipo publicado no GitHub Pages →](https://sedec-dpm-cgnat.github.io/cadastro-municipios-govbr/)**
+
+Consulte também as [regras de negócio](docs/REGRAS-NEGOCIO.md) e a documentação técnica para a equipe de TI.
+
 ## Executar
 
 ```powershell
