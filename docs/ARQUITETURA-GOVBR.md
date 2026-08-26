@@ -43,7 +43,7 @@ O mapa público pode carregar a geometria generalizada do IBGE por cache/CDN. O 
 1. `PublicPortal`: explicação, indicadores, busca, downloads e mapa;
 2. `IdentityEntry`: seleção de perfil e início do Login gov.br;
 3. `MunicipalRegistration`: Wizard, Upload, manifestação e revisão;
-4. `ReviewQueue`: análise, pendência, decisão e publicação;
+4. `RegistrationOperations`: confirmação, efetivação automática e publicação;
 5. `Obligations`: sete obrigações pós-efetivação;
 6. `NationalMap`: camadas IBGE, indicação, cadastro e status;
 7. `AuditConsole`: somente para auditoria autorizada;
@@ -76,12 +76,12 @@ O mapa público pode carregar a geometria generalizada do IBGE por cache/CDN. O 
 | Identity Adapter | troca do código OIDC por identidade validada e criação da sessão |
 | Access Service | perfis, transações, escopos, concessões e revogações |
 | Municipality Registry | município, UF, código IBGE, indicação vigente e vínculos |
-| Registration Workflow | rascunho, envio, análise, pendência, decisão e efetivação |
+| Registration Workflow | rascunho, confirmação, efetivação automática e liberação das obrigações |
 | Document Service | upload, hash, antivírus, versões, download autorizado |
 | Map Service | GeoJSON simplificado, cache, filtros e metadados de fonte |
 | Publication Service | projeção pública sem dados restritos |
 | Audit Service | eventos append-only, consulta autorizada e exportação |
-| Notification Service | e-mail institucional, avisos e prazos, sem decisão automática |
+| Notification Service | e-mail institucional de confirmação, avisos e prazos |
 
 ### Endpoints mínimos
 
@@ -96,12 +96,10 @@ POST   /api/v1/municipios/{ibge}/inscricao
 PATCH  /api/v1/inscricoes/{id}
 POST   /api/v1/inscricoes/{id}/documentos
 POST   /api/v1/inscricoes/{id}/manifestacao
-POST   /api/v1/inscricoes/{id}/enviar
+POST   /api/v1/inscricoes/{id}/confirmar
 GET    /api/v1/inscricoes/{id}/historico
 GET    /api/v1/inscricoes/{id}/obrigacoes
 PATCH  /api/v1/obrigacoes/{id}
-GET    /api/v1/admin/fila
-POST   /api/v1/admin/inscricoes/{id}/decisao
 GET    /api/v1/auditoria?entidade=&periodo=
 ```
 

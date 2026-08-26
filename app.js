@@ -28,21 +28,21 @@ const profiles = {
     title: 'Município',
     scope: 'Município selecionado pelo usuário e processos vinculados ao seu código IBGE.',
     copy: 'Inscrição, manifestação, upload da comprovação e acompanhamento das obrigações.',
-    permissions: ['Iniciar e editar o cadastro municipal', 'Enviar a comprovação da área de risco', 'Manifestar concordância quando o município for indicado', 'Acompanhar análise, pendências e documentos próprios'],
+    permissions: ['Iniciar e editar o cadastro municipal', 'Enviar a comprovação da área de risco', 'Manifestar concordância quando o município for indicado', 'Acompanhar o cadastro e os documentos próprios'],
     workspace: 'municipal'
   },
   estadual: {
     title: 'Estado',
     scope: 'Municípios do estado autorizado e demandas de apoio regional.',
     copy: 'Acompanhamento regional, orientação técnica e consulta a indicadores agregados.',
-    permissions: ['Consultar municípios do estado vinculado', 'Acompanhar inscrições e pendências regionais', 'Registrar apoio técnico e encaminhamentos', 'Exportar relatórios do escopo estadual'],
+    permissions: ['Consultar municípios do estado vinculado', 'Acompanhar inscrições e documentos regionais', 'Registrar apoio técnico e encaminhamentos', 'Exportar relatórios do escopo estadual'],
     workspace: 'readonly'
   },
   federal: {
     title: 'União',
     scope: 'Base nacional conforme unidade administrativa e transações concedidas.',
-    copy: 'Gestão nacional das indicações, análise, publicação e administração do cadastro.',
-    permissions: ['Gerenciar listas técnicas e fontes de referência', 'Analisar inscrições e registrar decisões', 'Publicar dados públicos e relatórios nacionais', 'Administrar perfis operacionais autorizados'],
+    copy: 'Gestão nacional das indicações, efetivação, publicação e administração do cadastro.',
+    permissions: ['Gerenciar listas técnicas e fontes de referência', 'Efetivar inscrições conforme as regras do serviço', 'Publicar dados públicos e relatórios nacionais', 'Administrar perfis operacionais autorizados'],
     workspace: 'readonly'
   },
   controle: {
@@ -82,7 +82,7 @@ function wizardRequirements(step = currentWizardStep) {
 }
 
 function updateWizardIndicator() {
-  const labels = { 1: 'Em andamento', 2: 'Em andamento', 3: 'Em andamento', 4: 'Pronto para envio' };
+  const labels = { 1: 'Em andamento', 2: 'Em andamento', 3: 'Em andamento', 4: 'Pronto para efetivação' };
   $$('[data-wizard-indicator]').forEach(item => {
     const step = Number(item.dataset.wizardIndicator);
     item.classList.toggle('step-complete', step < currentWizardStep);
@@ -91,7 +91,7 @@ function updateWizardIndicator() {
     const status = item.querySelector('small');
     if (status) status.textContent = step < currentWizardStep ? 'Concluída' : step === currentWizardStep ? labels[step] : 'Pendente';
   });
-  $('#wizard-status').textContent = currentWizardStep === 4 ? 'Pronto para envio' : 'Em preenchimento';
+  $('#wizard-status').textContent = currentWizardStep === 4 ? 'Pronto para efetivação' : 'Em preenchimento';
 }
 
 function updateReviewSummary() {
@@ -186,12 +186,12 @@ function setupObligations() {
   updateObligationSummary();
 }
 
-function openObligationsDemo() {
+function openObligationsPanel() {
   $('#submission-confirmation').hidden = true;
   $('#obligations-workspace').hidden = false;
   $('#municipal-workspace-title').textContent = 'Acompanhamento do município cadastrado';
   $('#municipal-workspace-copy').textContent = 'Consulte e atualize as obrigações previstas para o município após a efetivação do cadastro.';
-  $('#wizard-status').textContent = 'Cadastro efetivado · simulação';
+  $('#wizard-status').textContent = 'Cadastro efetivado';
   updateObligationSummary();
   $('#obligations-workspace').focus();
 }
@@ -237,9 +237,9 @@ function setupMunicipalWizard() {
   $('#previous-review').addEventListener('click', () => setWizardStep(3));
   $('#reset-demo').addEventListener('click', resetMunicipalWizard);
   $('#restart-after-submit').addEventListener('click', resetMunicipalWizard);
-  $('#open-obligations-demo').addEventListener('click', openObligationsDemo);
+  $('#open-obligations').addEventListener('click', openObligationsPanel);
   $('#return-public-after-submit').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
-  $('#back-confirmation').addEventListener('click', () => { $('#obligations-workspace').hidden = true; $('#submission-confirmation').hidden = false; $('#wizard-status').textContent = 'Enviado para análise'; $('#submission-confirmation').focus(); });
+  $('#back-confirmation').addEventListener('click', () => { $('#obligations-workspace').hidden = true; $('#submission-confirmation').hidden = false; $('#wizard-status').textContent = 'Cadastro efetivado'; $('#submission-confirmation').focus(); });
   $('#back-public-after-obligations').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
   $('#save-obligations-demo').addEventListener('click', () => openModal('Atualização salva', 'A simulação atualizou somente a interface. Na versão integrada, cada documento, situação e observação será versionado com data, usuário, hash e trilha de auditoria.'));
   $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
@@ -301,7 +301,7 @@ function setupProfiles() {
       updateWizardValidation(true, firstStep);
       return;
     }
-    $('#wizard-status').textContent = 'Enviado para análise';
+    $('#wizard-status').textContent = 'Cadastro efetivado';
     $('#municipal-wizard').hidden = true;
     $('#submission-confirmation').hidden = false;
     $('#submission-confirmation').focus();

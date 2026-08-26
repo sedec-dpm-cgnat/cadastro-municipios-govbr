@@ -45,21 +45,21 @@ O estado do protótipo é mantido pela variável `currentWizardStep`:
 | 1. Identificação | Município, responsável e ato formal de designação | Responsável informado e ato anexado. |
 | 2. Comprovação | Inventário, relação georreferenciada ou documento de comprovação | Arquivo de comprovação anexado. |
 | 3. Manifestação | Atesto condicional da indicação técnica | Exigido somente se o código IBGE estiver em `indicatedCodes`. Para município não indicado, a manifestação não é cobrada. |
-| 4. Revisão e envio | Resumo, checklist e envio demonstrativo | Todas as validações anteriores atendidas. |
+| 4. Revisão e efetivação | Resumo, checklist e confirmação demonstrativa | Todas as validações anteriores atendidas. |
 
 As regras são centralizadas em `wizardRequirements(step)`. Os botões de avanço chamam `updateWizardValidation(...)` antes de executar `setWizardStep(...)`. Assim, a etapa 2 não valida o atesto; essa validação ocorre exclusivamente ao avançar da etapa 3 para a revisão.
 
 O botão `Reiniciar simulação` executa `resetMunicipalWizard()`, limpa campos, anexos e atesto e retorna o Wizard para a etapa 1. Os botões de demonstração criam objetos `File` locais para permitir o teste sem transmitir arquivos.
 
-### 4.1. Confirmação pós-envio
+### 4.1. Confirmação pós-cadastro
 
-Depois que a validação da etapa 4 é concluída, `setupProfiles()` oculta o elemento `#municipal-wizard` e exibe `#submission-confirmation`. A tela apresenta situação “Enviado para análise”, protocolo demonstrativo e a mensagem de que um e-mail de confirmação foi enviado ao endereço associado à identidade gov.br do responsável.
+Depois que a validação da etapa 4 é concluída, `setupProfiles()` oculta o elemento `#municipal-wizard` e exibe `#submission-confirmation`. A tela apresenta situação “Cadastro efetivado”, protocolo demonstrativo e a mensagem de que um e-mail de confirmação foi enviado para a conta cadastrada do responsável.
 
 No protótipo, essa mensagem não dispara uma comunicação real. Na produção, a API deverá criar o protocolo, persistir o evento, enfileirar a notificação e registrar sucesso ou falha da entrega sem bloquear a consulta do protocolo pelo município.
 
 ### 4.2. Painel pós-cadastro e documentos obrigatórios
 
-Na tela de confirmação, o botão `#open-obligations-demo` permite simular a efetivação do cadastro e abrir o painel `#obligations-workspace`. A separação é intencional: o envio ainda representa a situação **Em análise**; a efetivação é uma decisão administrativa que, no sistema real, deverá liberar o painel para o município cadastrado.
+Na tela de confirmação, o botão `#open-obligations` abre o painel `#obligations-workspace`. O cadastro já está efetivado quando a confirmação é exibida; o botão apenas conduz o usuário à jornada de documentos e obrigações pós-cadastro.
 
 As sete obrigações são definidas em `obligationDefinitions` no `app.js` e renderizadas por `renderObligationCards()`. Cada item possui campo de upload, situação (`Não iniciado`, `Em andamento` ou `Concluído`) e observação. `updateObligationSummary()` atualiza os indicadores 0/7, andamento e pendências. Os botões `Usar arquivo demonstrativo` criam arquivos locais apenas para permitir a apresentação do fluxo sem transmitir conteúdo.
 
@@ -124,10 +124,10 @@ Para publicar uma atualização:
 Para transformar o protótipo em serviço institucional, a equipe deverá substituir os pontos simulados por:
 
 1. autenticação gov.br e autorização por perfil/escopo;
-2. API REST ou serviço equivalente para municípios, processos, documentos, decisões e obrigações;
+2. API REST ou serviço equivalente para municípios, cadastros, documentos e obrigações;
 3. banco relacional com suporte espacial, preferencialmente PostgreSQL/PostGIS;
 4. armazenamento institucional de objetos com versionamento e hash;
-5. fila de análise de arquivos, antivírus e validação geoespacial;
+5. fila de processamento de arquivos, antivírus e validação geoespacial;
 6. trilha de auditoria imutável e observabilidade;
 7. geração controlada de CSV, GeoJSON e relatórios;
 8. integração com SEI, fontes oficiais, serviços de mapas e demais sistemas definidos pelo Ministério.

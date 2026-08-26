@@ -12,11 +12,8 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 |---|---|
 | Município indicado | Município constante da lista técnica vigente da União ou indicado pelo Estado. A indicação não equivale à inscrição efetivada. |
 | Município solicitante | Município que inicia a inscrição por iniciativa própria, conforme a origem registrada no processo. |
-| Cadastro em preenchimento | Rascunho persistido, ainda sem envio para análise. |
-| Cadastro em análise | Pedido enviado, com protocolo, aguardando conferência administrativa e técnica. |
-| Cadastro efetivado | Pedido deferido e incluído no Cadastro Nacional. |
-| Pendência | Pedido que precisa de complementação ou correção, com justificativa e prazo definidos pela área competente. |
-| Indeferido | Pedido encerrado por decisão fundamentada. O histórico deve permanecer disponível para auditoria. |
+| Cadastro em preenchimento | Rascunho persistido, ainda não confirmado pelo responsável. |
+| Cadastro efetivado | Cadastro confirmado com os requisitos válidos, protocolo gerado e inclusão automática no Cadastro Nacional. |
 
 ## 3. Regras funcionais
 
@@ -29,9 +26,9 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 
 ### RN02 — Perfis e escopos
 
-1. **Município:** cria e acompanha o processo do próprio código IBGE, envia documentos e responde a pendências.
+1. **Município:** cria e acompanha o cadastro do próprio código IBGE, envia documentos e atualiza as obrigações.
 2. **Estado:** consulta e acompanha municípios do escopo estadual autorizado, registra apoio técnico e exporta relatórios permitidos.
-3. **União:** administra listas, fontes, análise nacional, decisões e publicação de dados conforme autorização administrativa.
+3. **União:** administra listas, fontes, efetivação, decisões administrativas e publicação de dados conforme autorização institucional.
 4. **Controle e fiscalização:** consulta dados públicos e, mediante autorização formal, acessa evidências e trilhas de auditoria sem alterar o cadastro.
 5. Toda API deve aplicar autorização por perfil, transação e escopo territorial. O front-end não deve ser a única camada de controle.
 
@@ -71,14 +68,14 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 4. Ao tentar avançar sem cumprir requisito, o sistema deve informar exatamente o que falta, sem apagar os dados já preenchidos.
 5. O usuário pode salvar um rascunho e retomar posteriormente.
 
-### RN08 — Revisão, protocolo e análise
+### RN08 — Revisão, protocolo e efetivação
 
-1. Antes do envio, o sistema deve apresentar resumo do município, responsável, origem, arquivo e manifestação.
-2. O envio deve gerar protocolo único, registrar versão do processo e apresentar uma tela de confirmação.
-3. A tela de confirmação deve informar que um e-mail de confirmação foi enviado ao endereço associado à identidade gov.br do usuário responsável.
-4. Após o envio, a situação deve mudar para **Em análise**.
-5. A área competente pode efetivar, solicitar complementação ou indeferir, sempre com usuário, data, justificativa e documentos relacionados.
-6. O município não deve conseguir apagar versões ou decisões; correções devem gerar nova versão e histórico.
+1. Antes da confirmação, o sistema deve apresentar resumo do município, responsável, origem, arquivo e manifestação.
+2. A confirmação deve gerar protocolo único, registrar a versão do cadastro e apresentar uma tela de confirmação.
+3. A tela de confirmação deve informar que um e-mail de confirmação foi enviado para a conta cadastrada do usuário responsável.
+4. Após a confirmação, a situação deve mudar imediatamente para **Cadastro efetivado**, sem etapa intermediária de análise.
+5. O sistema deve liberar imediatamente o painel de documentos e obrigações pós-cadastro.
+6. O município não deve conseguir apagar versões; correções devem gerar nova versão e histórico.
 
 ### RN09 — Obrigações após a inclusão
 
@@ -94,20 +91,20 @@ Para municípios inscritos, o painel deve acompanhar os documentos e prazos rela
 
 Cada obrigação deve possuir situação, documento, data de referência, prazo, responsável, observação e histórico de alterações.
 
-No protótipo, a tela de confirmação do envio oferece a ação **Simular efetivação e abrir obrigações** para demonstrar a jornada seguinte. A situação exibida na confirmação continua sendo “Enviado para análise”; em produção, o painel somente deve ser liberado após decisão de efetivação registrada pela autoridade competente.
+No protótipo, a confirmação já apresenta a situação **Cadastro efetivado**. A ação **Acessar documentos obrigatórios** abre o painel liberado imediatamente após a confirmação, reproduzindo a regra de efetivação automática.
 
 O painel pós-cadastro deve permitir ao município consultar cada obrigação, anexar o documento comprobatório, indicar sua situação e registrar observações. A alteração deve gerar nova versão e evento de auditoria, sem apagar a versão anterior.
 
 ### RN10 — Transparência e dados públicos
 
-1. A consulta pública deve diferenciar indicação, preenchimento, análise e cadastro efetivado.
+1. A consulta pública deve diferenciar indicação, preenchimento e cadastro efetivado.
 2. O mapa deve permitir consulta por município, UF, situação e código IBGE.
 3. Toda publicação deve informar fonte, versão, data de atualização e limitações dos dados.
 4. As exportações públicas devem conter somente campos definidos como públicos e não podem expor dados pessoais desnecessários.
 
 ### RN11 — Auditoria, integridade e proteção de dados
 
-1. Ações relevantes devem gerar evento de auditoria: login, criação, alteração, upload, manifestação, envio, decisão, exportação e concessão de acesso.
+1. Ações relevantes devem gerar evento de auditoria: login, criação, alteração, upload, manifestação, confirmação, efetivação, exportação e concessão de acesso.
 2. Arquivos devem ser armazenados em objeto imutável ou versionado, com hash, metadados e controle de acesso.
 3. O sistema deve aplicar minimização, finalidade, retenção e controle de acesso conforme a LGPD e as normas institucionais.
 4. Órgãos de controle e Ministério Público devem receber acesso apenas ao escopo autorizado, preservando a rastreabilidade das consultas.
@@ -117,19 +114,16 @@ O painel pós-cadastro deve permitir ao município consultar cada obrigação, a
 | Situação atual | Ação | Pré-condição | Próxima situação |
 |---|---|---|---|
 | Em preenchimento | Salvar rascunho | Usuário autenticado | Em preenchimento |
-| Em preenchimento | Enviar | Comprovação e manifestação condicional válidas | Em análise |
-| Em análise | Solicitar complementação | Decisão fundamentada | Pendência |
-| Em análise | Deferir | Conferência concluída | Cadastro efetivado |
-| Em análise | Indeferir | Decisão fundamentada | Indeferido |
-| Pendência | Corrigir e reenviar | Complementação apresentada | Em análise |
+| Em preenchimento | Confirmar cadastro | Comprovação e manifestação condicional válidas | Cadastro efetivado |
+| Cadastro efetivado | Acessar obrigações | Cadastro confirmado | Cadastro efetivado |
+| Cadastro efetivado | Atualizar documento | Usuário municipal autorizado | Cadastro efetivado, nova versão |
 | Cadastro efetivado | Atualização anual | Registro anual informado | Cadastro efetivado, nova versão |
 
 ## 5. Parâmetros que precisam de decisão institucional
 
 - tamanho máximo e política de formatos dos arquivos;
 - lista vigente e processo formal de sua publicação;
-- unidades responsáveis pela análise e pelos recursos;
-- prazos operacionais para complementação e decisão;
+- unidades responsáveis pela gestão e manutenção do cadastro;
 - campos públicos e campos restritos;
 - política de retenção e descarte de documentos;
 - metodologia de validação geoespacial;

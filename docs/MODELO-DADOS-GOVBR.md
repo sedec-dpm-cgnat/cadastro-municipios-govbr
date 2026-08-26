@@ -57,7 +57,7 @@
 {
   "usuario": "govbr-sub-interno",
   "papel": "REPRESENTANTE_MUNICIPAL",
-  "transacao": "INSCRICAO_ENVIAR",
+  "transacao": "INSCRICAO_CONFIRMAR",
   "escopo": { "codigoIbge": "3550704" },
   "permitido": true,
   "motivo": "vínculo ativo e município no escopo do usuário"
@@ -80,7 +80,7 @@ O valor de `usuario` acima é ilustrativo. Não colocar CPF ou token em logs, ex
 ### Restritos
 
 - identidade e vínculo institucional do usuário;
-- documentos ainda em análise;
+- documentos de uso restrito;
 - CPF, contatos e atos de designação;
 - pareceres, notas internas e justificativas não publicadas;
 - logs de segurança e trilhas de auditoria;

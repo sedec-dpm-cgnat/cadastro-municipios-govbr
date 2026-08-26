@@ -5,7 +5,7 @@
 O sistema deverá oferecer um serviço público digital para:
 
 1. receber a inscrição do município no Cadastro Nacional;
-2. acompanhar manifestação, análise e decisão;
+2. acompanhar manifestação, efetivação automática e obrigações;
 3. habilitar o acompanhamento das responsabilidades do art. 5º após a efetivação;
 4. publicar listas, situação, fontes, documentos públicos e mapa nacional;
 5. preservar trilha de auditoria, proteção de dados e segregação de funções.
@@ -64,9 +64,9 @@ O painel público não deve expor CPF, e-mail, telefone, documentos pessoais, ra
 
 | Perfil | Escopo padrão | Pode fazer | Não pode fazer |
 |---|---|---|---|
-| Município | Código IBGE do município vinculado | iniciar/editar inscrição, enviar pacote, manifestar-se, acompanhar documentos próprios, atualizar obrigações após efetivação | consultar outro município, alterar lista técnica, aprovar a própria inscrição, publicar dados |
-| Estado | UF e municípios autorizados | consultar evolução regional, registrar apoio, acompanhar pendências e exportar relatórios do escopo | alterar cadastro municipal, aprovar inscrição, publicar lista nacional, acessar dados fora da UF |
-| União | unidade administrativa e abrangência nacional definida | manter fontes/listas, analisar processos, registrar decisão, publicar dados, acompanhar indicadores | atuar fora da unidade concedida; não deve acumular aprovação e administração de acesso sem segregação |
+| Município | Código IBGE do município vinculado | iniciar/editar inscrição, enviar pacote, manifestar-se, confirmar o cadastro, acompanhar documentos próprios e atualizar obrigações após efetivação | consultar outro município, alterar lista técnica, aprovar a própria inscrição, publicar dados |
+| Estado | UF e municípios autorizados | consultar evolução regional, registrar apoio e exportar relatórios do escopo | alterar cadastro municipal, efetivar inscrição fora do escopo, publicar lista nacional, acessar dados fora da UF |
+| União | unidade administrativa e abrangência nacional definida | manter fontes/listas, administrar efetivações automáticas, publicar dados e acompanhar indicadores | atuar fora da unidade concedida; não deve acumular administração de dados e acessos sem segregação |
 | Controle e fiscalização | dados públicos; escopo restrito quando formalmente concedido | consultar, exportar evidências, visualizar trilha autorizada e solicitar informação | inserir/alterar cadastro, excluir documento, alterar situação ou conceder acesso |
 
 ### 4.2 Perfis operacionais internos recomendados
@@ -77,8 +77,7 @@ Os quatro perfis acima são portas de entrada. No backend, a equipe deve decompo
 |---|---|
 | Gestor de acesso | atribuir/revogar perfis e escopos; não analisa o próprio processo |
 | Operador municipal | preparar dados e documentos do município |
-| Representante municipal | confirmar manifestação e enviar o cadastro |
-| Analista técnico | analisar documentos e registrar pendências |
+| Representante municipal | confirmar manifestação e efetivar o cadastro |
 | Publicador | revisar e publicar dados públicos |
 | Administrador de referência | manter municípios, UFs, fontes e versões |
 | Auditor | consultar eventos e relatórios sem alterar dados |
@@ -124,13 +123,13 @@ O nível mínimo final deve ser confirmado pela área jurídica, segurança e ge
 
 O processo deve usar uma máquina de estados, não apenas um campo textual:
 
-`RASCUNHO → ENVIADO → EM_ANALISE → PENDENCIA → DEVOLVIDO → APROVADO → EFETIVADO → SUSPENSO/ARQUIVADO`
+`RASCUNHO → EFETIVADO → SUSPENSO/ARQUIVADO`
 
 Regras essenciais:
 
 - o atesto aparece somente na etapa de manifestação e somente quando `municipio.indicado_atual = true` e a origem da indicação for União ou Estado;
-- o upload inicial é obrigatório antes de `ENVIADO`;
-- a inscrição não é efetivada apenas pelo preenchimento do formulário;
+- o upload inicial é obrigatório antes de `CONFIRMAR`;
+- a inscrição é efetivada automaticamente após a confirmação dos requisitos obrigatórios;
 - documentos pós-inscrição somente ficam editáveis quando `status = EFETIVADO`;
 - toda transição exige usuário, data/hora, justificativa quando aplicável e versão dos documentos;
 - documentos substituídos não devem ser apagados fisicamente: recebem nova versão e permanecem no histórico.
