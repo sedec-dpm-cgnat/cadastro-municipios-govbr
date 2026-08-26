@@ -24,7 +24,8 @@ Abra `http://127.0.0.1:4174`.
 - seleção de perfil antes do botão de autenticação gov.br;
 - painel público sem autenticação, com mapa Leaflet, poligonais IBGE, filtros e downloads;
 - distinção cartográfica entre indicados, cadastrados e demais municípios;
-- área municipal com Wizard, Upload, atesto condicional e preparação da jornada pós-inscrição;
+- área municipal com Wizard iniciado pela identificação do responsável, upload do ato formal de designação, atesto condicional e preparação da jornada pós-inscrição;
+- reinício da simulação para demonstrar novamente o cadastro desde a primeira etapa;
 - visões de estado, União e controle com permissões de somente leitura no protótipo;
 - documentação de acesso, arquitetura, API, segurança, LGPD e modelo de dados para implementação institucional.
 
