@@ -10,6 +10,8 @@ let stateLayer = null;
 let registeredLayer = null;
 let mapDataPromise = null;
 let currentMapFilter = 'all';
+let currentWizardStep = 2;
+const demoMunicipalityCode = '3550704';
 
 const profiles = {
   municipal: {
@@ -60,6 +62,77 @@ function openModal(title, copy) {
 
 function closeModal() { $('#demo-modal').hidden = true; }
 
+function wizardRequirements() {
+  const requirements = [];
+  if (!$('#municipal-responsible').value.trim()) requirements.push('informe o responsável pelo cadastro');
+  if (!$('#risk-file').files.length) requirements.push('anexe o arquivo de comprovação');
+  if (indicatedCodes.has(demoMunicipalityCode) && !$('#attestation').checked) requirements.push('marque o atesto de concordância com a indicação técnica');
+  return { valid: requirements.length === 0, requirements };
+}
+
+function updateWizardIndicator() {
+  const labels = { 1: 'Concluída', 2: 'Em andamento', 3: 'Pendente', 4: 'Pendente' };
+  $$('[data-wizard-indicator]').forEach(item => {
+    const step = Number(item.dataset.wizardIndicator);
+    item.classList.toggle('step-complete', step < currentWizardStep);
+    item.classList.toggle('step-current', step === currentWizardStep);
+    item.classList.toggle('step-pending', step > currentWizardStep);
+    const status = item.querySelector('small');
+    if (status) status.textContent = step < currentWizardStep ? 'Concluída' : step === currentWizardStep ? labels[step] : 'Pendente';
+  });
+  $('#wizard-status').textContent = currentWizardStep === 4 ? 'Pronto para envio' : 'Em preenchimento';
+}
+
+function updateReviewSummary() {
+  const files = [...$('#risk-file').files];
+  const fileLabel = files.length ? files.map(file => file.name).join(', ') : 'Nenhum arquivo';
+  $('#manifestation-file-name').textContent = fileLabel;
+  $('#review-file').innerHTML = `<span aria-hidden="true">${files.length ? '✓' : '!'}</span> ${files.length ? 'Arquivo de comprovação anexado' : 'Arquivo de comprovação pendente'}`;
+  $('#review-responsible').innerHTML = `<span aria-hidden="true">${$('#municipal-responsible').value.trim() ? '✓' : '!'}</span> ${$('#municipal-responsible').value.trim() ? 'Responsável pelo cadastro informado' : 'Responsável pelo cadastro pendente'}`;
+  const attestationRequired = indicatedCodes.has(demoMunicipalityCode);
+  $('#review-attestation').hidden = !attestationRequired;
+  if (attestationRequired) $('#review-attestation').innerHTML = `<span aria-hidden="true">${$('#attestation').checked ? '✓' : '!'}</span> ${$('#attestation').checked ? 'Manifestação prévia registrada' : 'Manifestação prévia pendente'}`;
+}
+
+function updateWizardValidation(show = false) {
+  const result = wizardRequirements();
+  const box = $('#wizard-validation');
+  if (!show || result.valid) {
+    box.hidden = true;
+    return result;
+  }
+  $('#wizard-validation-copy').textContent = `Para continuar, ${result.requirements.join('; ')}.`;
+  box.hidden = false;
+  return result;
+}
+
+function setWizardStep(step) {
+  currentWizardStep = step;
+  $$('[data-wizard-panel]').forEach(panel => { panel.hidden = Number(panel.dataset.wizardPanel) !== step; });
+  updateWizardIndicator();
+  updateReviewSummary();
+  updateWizardValidation(false);
+}
+
+function setupMunicipalWizard() {
+  const attestationBox = $('#attestation-box');
+  const nonIndicatedMessage = $('#non-indicated-message');
+  const isIndicated = indicatedCodes.has(demoMunicipalityCode);
+  attestationBox.hidden = !isIndicated;
+  nonIndicatedMessage.hidden = isIndicated;
+  $('#next-step').addEventListener('click', () => {
+    const result = updateWizardValidation(true);
+    if (!result.valid) return;
+    setWizardStep(3);
+  });
+  $('#previous-step').addEventListener('click', () => setWizardStep(2));
+  $('#next-review').addEventListener('click', () => setWizardStep(4));
+  $('#previous-review').addEventListener('click', () => setWizardStep(3));
+  $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
+  $('#attestation').addEventListener('change', () => updateWizardValidation(false));
+  setWizardStep(2);
+}
+
 function setupShell() {
   $$('[data-scroll]').forEach(button => button.addEventListener('click', event => {
     event.preventDefault();
@@ -100,19 +173,36 @@ function setupProfiles() {
     $('#readonly-workspace').hidden = profile.workspace === 'municipal';
     $('#readonly-title').textContent = `Visão de acompanhamento · ${profile.title}`;
     $('#readonly-copy').textContent = profile.copy;
+    if (profile.workspace === 'municipal') setWizardStep(2);
     $('#workspace').scrollIntoView({ behavior: 'smooth', block: 'start' });
     openModal('Autenticação simulada', 'Na implementação, esta etapa redirecionará o usuário ao Login Único gov.br e retornará ao sistema com a identidade autenticada. O protótipo abriu a área de trabalho correspondente ao perfil escolhido.');
   });
   $('#back-public').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
   $('#save-demo').addEventListener('click', () => openModal('Rascunho salvo', 'O protótipo não envia dados. Na versão integrada, o rascunho será persistido com usuário, município, versão do arquivo e trilha de auditoria.'));
-  $('#submit-demo').addEventListener('click', () => openModal('Revisão necessária', 'Antes do envio, o sistema deve verificar o arquivo, a manifestação condicional e os campos obrigatórios.'));
+  $('#submit-demo').addEventListener('click', () => {
+    const result = updateWizardValidation(true);
+    if (!result.valid) { setWizardStep(2); return; }
+    $('#wizard-status').textContent = 'Enviado para análise';
+    openModal('Cadastro enviado · simulação', 'O protótipo gerou um envio demonstrativo. Na versão integrada, o município receberá protocolo e o processo seguirá para análise, complementação ou efetivação conforme as regras de negócio.');
+  });
   $('#export-role-data').addEventListener('click', () => openModal('Exportação controlada', 'A API deverá aplicar o mesmo escopo do perfil antes de gerar CSV, GeoJSON ou relatório.'));
+  setupMunicipalWizard();
 }
 
 function setupUpload() {
-  $('#risk-file').addEventListener('change', event => {
+  const updateSelectedFile = event => {
     const files = [...event.target.files];
     $('#file-list').textContent = files.length ? files.map(file => `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`).join(' | ') : '';
+    updateWizardValidation(false);
+    updateReviewSummary();
+  };
+  $('#risk-file').addEventListener('change', updateSelectedFile);
+  $('#use-demo-file').addEventListener('click', () => {
+    const demoFile = new File(['Arquivo demonstrativo do inventário de áreas de risco.'], 'comprovacao-area-risco-demo.zip', { type: 'application/zip' });
+    const transfer = new DataTransfer();
+    transfer.items.add(demoFile);
+    $('#risk-file').files = transfer.files;
+    $('#risk-file').dispatchEvent(new Event('change', { bubbles: true }));
   });
   $('#download-demo').addEventListener('click', () => {
     const csv = '\ufeffcodigo_ibge,municipio,uf,situacao\n4314902,Porto Alegre,RS,Cadastrado\n3304557,Rio de Janeiro,RJ,Cadastrado\n3550308,São Paulo,SP,Cadastrado\n2611606,Recife,PE,Cadastrado\n1302603,Manaus,AM,Cadastrado\n';
