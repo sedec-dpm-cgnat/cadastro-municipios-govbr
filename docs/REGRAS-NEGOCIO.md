@@ -58,7 +58,7 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 
 ### RN06 — Manifestação prévia para município indicado
 
-1. Se o código IBGE estiver na lista vigente de indicados, o campo de manifestação deve ser exibido e ser obrigatório.
+1. Se o município estiver na lista vigente de indicados pela União, o campo de manifestação deve ser exibido e ser obrigatório.
 2. O avanço fica bloqueado enquanto o responsável não atestar a concordância com a indicação técnica.
 3. A manifestação deve registrar usuário, órgão, data, hora, versão da lista e texto apresentado ao responsável.
 4. Se o município não estiver na lista de indicados, o campo de atesto não deve ser exibido; a comprovação documental continua obrigatória.
