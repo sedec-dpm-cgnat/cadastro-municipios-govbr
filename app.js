@@ -67,7 +67,7 @@ function wizardRequirements(step = currentWizardStep) {
   if (!$('#municipal-responsible').value.trim()) requirements.push('informe o responsável pelo cadastro');
   if (step >= 1 && !$('#formal-act-file').files.length) requirements.push('anexe o ato formal de designação do representante');
   if (step >= 2 && !$('#risk-file').files.length) requirements.push('anexe o arquivo de comprovação da área de risco');
-  if (step >= 2 && indicatedCodes.has(demoMunicipalityCode) && !$('#attestation').checked) requirements.push('marque o atesto de concordância com a indicação técnica');
+  if (step >= 3 && indicatedCodes.has(demoMunicipalityCode) && !$('#attestation').checked) requirements.push('marque o atesto de concordância com a indicação técnica');
   return { valid: requirements.length === 0, requirements };
 }
 
@@ -104,13 +104,15 @@ function updateWizardValidation(show = false, step = currentWizardStep) {
   const result = wizardRequirements(step);
   const identificationBox = $('#identification-validation');
   const wizardBox = $('#wizard-validation');
+  const manifestationBox = $('#manifestation-validation');
   identificationBox.hidden = true;
   wizardBox.hidden = true;
+  manifestationBox.hidden = true;
   if (!show || result.valid) {
     return result;
   }
-  const box = step === 1 ? identificationBox : wizardBox;
-  const copy = step === 1 ? $('#identification-validation-copy') : $('#wizard-validation-copy');
+  const box = step === 1 ? identificationBox : step === 3 ? manifestationBox : wizardBox;
+  const copy = step === 1 ? $('#identification-validation-copy') : step === 3 ? $('#manifestation-validation-copy') : $('#wizard-validation-copy');
   copy.textContent = `Para continuar, ${result.requirements.join('; ')}.`;
   box.hidden = false;
   return result;
@@ -152,7 +154,11 @@ function setupMunicipalWizard() {
   });
   $('#previous-identification').addEventListener('click', () => setWizardStep(1));
   $('#previous-step').addEventListener('click', () => setWizardStep(2));
-  $('#next-review').addEventListener('click', () => setWizardStep(4));
+  $('#next-review').addEventListener('click', () => {
+    const result = updateWizardValidation(true, 3);
+    if (!result.valid) return;
+    setWizardStep(4);
+  });
   $('#previous-review').addEventListener('click', () => setWizardStep(3));
   $('#reset-demo').addEventListener('click', resetMunicipalWizard);
   $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
@@ -209,7 +215,7 @@ function setupProfiles() {
   $('#submit-demo').addEventListener('click', () => {
     const result = updateWizardValidation(true, 4);
     if (!result.valid) {
-      const firstStep = !$('#municipal-responsible').value.trim() || !$('#formal-act-file').files.length ? 1 : 2;
+      const firstStep = !$('#municipal-responsible').value.trim() || !$('#formal-act-file').files.length ? 1 : !$('#risk-file').files.length ? 2 : 3;
       setWizardStep(firstStep);
       updateWizardValidation(true, firstStep);
       return;

@@ -67,7 +67,7 @@ As regras devem ser validadas pela área normativa e pela equipe de TI antes da 
 
 1. A etapa de identificação exige município, responsável pelo cadastro e ato formal de designação.
 2. A etapa de comprovação exige arquivo selecionado.
-3. A etapa de manifestação exige atesto somente quando RN06 for aplicável.
+3. A etapa 2 não deve cobrar o atesto. A etapa 3, de manifestação, exige atesto somente quando RN06 for aplicável.
 4. Ao tentar avançar sem cumprir requisito, o sistema deve informar exatamente o que falta, sem apagar os dados já preenchidos.
 5. O usuário pode salvar um rascunho e retomar posteriormente.
 

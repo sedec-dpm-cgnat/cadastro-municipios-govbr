@@ -128,7 +128,7 @@ O processo deve usar uma máquina de estados, não apenas um campo textual:
 
 Regras essenciais:
 
-- o atesto aparece somente quando `municipio.indicado_atual = true`;
+- o atesto aparece somente na etapa de manifestação e somente quando `municipio.indicado_atual = true`;
 - o upload inicial é obrigatório antes de `ENVIADO`;
 - a inscrição não é efetivada apenas pelo preenchimento do formulário;
 - documentos pós-inscrição somente ficam editáveis quando `status = EFETIVADO`;

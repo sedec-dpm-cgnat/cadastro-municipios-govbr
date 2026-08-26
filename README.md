@@ -8,7 +8,7 @@ Esta pasta não altera nem substitui o protótipo apresentado anteriormente em `
 
 > **[Abrir o protótipo publicado no GitHub Pages →](https://sedec-dpm-cgnat.github.io/cadastro-municipios-govbr/)**
 
-Consulte também as [regras de negócio](docs/REGRAS-NEGOCIO.md) e a documentação técnica para a equipe de TI.
+Consulte também as [regras de negócio](docs/REGRAS-NEGOCIO.md) e a [documentação do código do aplicativo](docs/DOCUMENTACAO-CODIGO.md).
 
 ## Executar
 
@@ -31,6 +31,7 @@ Abra `http://127.0.0.1:4174`.
 
 ## Documentação para TI
 
+- [Documentação do código do aplicativo](docs/DOCUMENTACAO-CODIGO.md)
 - [Especificação Gov.br e matriz de acesso](docs/ESPECIFICACAO-GOVBR-TI.md)
 - [Arquitetura e componentes técnicos](docs/ARQUITETURA-GOVBR.md)
 - [Modelo de dados e API proposta](docs/MODELO-DADOS-GOVBR.md)
