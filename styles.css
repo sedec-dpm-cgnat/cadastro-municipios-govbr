@@ -56,7 +56,7 @@ a { color: var(--gov-blue); }
 .br-breadcrumb { padding: 24px 0 16px; }
 .crumb-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
 .crumb-list li + li::before { margin-right: 8px; color: var(--gov-muted); content: '/'; }
-.service-alert { display: flex; gap: 12px; align-items: start; margin-bottom: 32px; }
+.service-alert { display: flex; gap: 12px; align-items: start; margin-bottom: 32px; }.service-alert .alert-note { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(19,81,180,.2); }
 .message-icon { display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border-radius: 50%; color: #fff; background: var(--gov-blue); font-weight: 800; }
 .br-message p { margin: 2px 0 0; }
 .service-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 48px; align-items: center; padding: 24px 0 48px; }

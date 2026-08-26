@@ -4,6 +4,22 @@ Segunda versão isolada do protótipo do Cadastro Nacional de Municípios com Á
 
 Esta pasta não altera nem substitui o protótipo apresentado anteriormente em `CNM-RISCO`. Ela demonstra a mesma jornada com componentes e princípios do [Padrão Digital Gov.br](https://www.gov.br/ds/home), versão 3.7.0, e foi preparada para servir como referência visual e técnica à equipe de TI.
 
+> **Atenção — material de referência:** este repositório contém um protótipo funcional para avaliação do futuro serviço. Não é o sistema oficial, não efetiva inscrições e não deve receber dados pessoais, documentos reais ou credenciais. Login, arquivos, mapa temático e indicadores apresentados são simulados ou demonstrativos.
+
+## O que é este projeto?
+
+É uma proposta de experiência digital para o Cadastro Nacional de Municípios com Áreas Suscetíveis à Ocorrência de Deslizamentos de Grande Impacto, Inundações Bruscas ou Processos Geológicos ou Hidrológicos Correlatos. A página permite navegar pela consulta pública, visualizar a distinção entre municípios indicados e cadastrados, selecionar perfis de acesso e simular a jornada municipal de identificação, comprovação, manifestação, revisão e envio.
+
+O projeto foi organizado para apoiar três finalidades:
+
+1. apresentar às áreas gestoras uma experiência simples, direta e visualmente alinhada ao Gov.br;
+2. permitir que a equipe de TI avalie componentes, estados de tela e integrações necessárias;
+3. registrar regras de negócio, arquitetura, modelo de dados e documentação do código para orientar a implementação institucional em PHP e PostgreSQL/PostGIS.
+
+## O que não está implementado aqui?
+
+Esta versão não possui autenticação real gov.br, banco de dados, persistência de rascunhos, análise administrativa, armazenamento institucional de documentos ou API de produção. O botão de login, os uploads e o envio são simulações locais no navegador. A futura versão institucional deverá ser implementada e homologada na infraestrutura do Ministério pela equipe responsável.
+
 ## Acesso rápido
 
 > **[Abrir o protótipo publicado no GitHub Pages →](https://sedec-dpm-cgnat.github.io/cadastro-municipios-govbr/)**
