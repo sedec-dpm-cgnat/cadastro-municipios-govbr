@@ -8,7 +8,7 @@ Esta pasta não altera nem substitui o protótipo apresentado anteriormente em `
 
 ## O que é este projeto?
 
-É uma proposta de experiência digital para o Cadastro Nacional de Municípios com Áreas Suscetíveis à Ocorrência de Deslizamentos de Grande Impacto, Inundações Bruscas ou Processos Geológicos ou Hidrológicos Correlatos. A página permite navegar pela consulta pública, visualizar a distinção entre municípios indicados e cadastrados, selecionar perfis de acesso e simular a jornada municipal de identificação, comprovação, manifestação, revisão e envio.
+É uma proposta de experiência digital para o Cadastro Nacional de Municípios com Áreas Suscetíveis à Ocorrência de Deslizamentos de Grande Impacto, Inundações Bruscas ou Processos Geológicos ou Hidrológicos Correlatos. A página permite navegar pela consulta pública, visualizar a distinção entre municípios indicados e cadastrados, selecionar perfis de acesso e simular a jornada municipal de identificação, comprovação, manifestação, revisão, envio e acompanhamento dos documentos obrigatórios após a efetivação.
 
 O projeto foi organizado para apoiar três finalidades:
 
@@ -42,6 +42,7 @@ Abra `http://127.0.0.1:4174`.
 - distinção cartográfica entre indicados, cadastrados e demais municípios;
 - área municipal com Wizard iniciado pela identificação do responsável, upload do ato formal de designação, atesto condicional e preparação da jornada pós-inscrição;
 - tela de confirmação após o envio, com protocolo demonstrativo e aviso de e-mail de confirmação ao usuário responsável;
+- painel pós-cadastro com as sete obrigações do art. 5º, upload de documentos comprobatórios, situação, observações e resumo de pendências;
 - reinício da simulação para demonstrar novamente o cadastro desde a primeira etapa;
 - visões de estado, União e controle com permissões de somente leitura no protótipo;
 - documentação de acesso, arquitetura, API, segurança, LGPD e modelo de dados para implementação institucional.

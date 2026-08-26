@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rawline:wght@400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-    <link rel="stylesheet" href="styles.css?v=20260826-prototipo-6" />
+    <link rel="stylesheet" href="styles.css?v=20260826-prototipo-7" />
   </head>
   <body>
     <a class="br-skiplink" href="#main-content">Ir para o conteúdo</a>
@@ -155,7 +155,14 @@
               <div class="br-message success confirmation-email" role="status"><div class="message-icon" aria-hidden="true">✓</div><div><strong>E-mail de confirmação enviado</strong><p>Um e-mail de confirmação foi enviado para o endereço associado à identidade gov.br do usuário responsável pelo cadastro.</p></div></div>
               <div class="confirmation-meta"><span>Protocolo demonstrativo</span><strong>CNM-SIM-2026-0001</strong></div>
               <p class="prototype-note"><strong>Simulação:</strong> na versão integrada, o sistema exibirá o protocolo real e registrará o envio e a notificação na trilha de auditoria. Nenhum e-mail é enviado por este protótipo.</p>
-              <div class="confirmation-actions"><button class="br-button secondary" type="button" id="return-public-after-submit">Voltar à consulta pública</button><button class="br-button primary" type="button" id="restart-after-submit">Iniciar nova simulação</button></div>
+              <div class="confirmation-actions"><button class="br-button primary" type="button" id="open-obligations-demo">Simular efetivação e abrir obrigações <span aria-hidden="true">→</span></button><button class="br-button secondary" type="button" id="return-public-after-submit">Voltar à consulta pública</button><button class="br-button secondary" type="button" id="restart-after-submit">Iniciar nova simulação</button></div>
+            </section>
+            <section class="obligations-workspace br-card" id="obligations-workspace" hidden aria-labelledby="obligations-title" tabindex="-1">
+              <div class="workspace-card-head"><div><span class="eyebrow">PAINEL DO MUNICÍPIO CADASTRADO</span><h3 id="obligations-title">Documentos e obrigações do município cadastrado</h3><p>Após a efetivação, acompanhe os documentos e as providências previstas para manter o cadastro atualizado.</p></div><span class="br-tag success-tag">Cadastro efetivado · simulação</span></div>
+              <div class="br-message info compact-message obligations-intro"><div class="message-icon" aria-hidden="true">i</div><div><strong>Jornada pós-cadastro</strong><p>Este painel organiza as sete obrigações do art. 5º do Decreto nº 10.692/2021. Em cada item, o município poderá anexar a comprovação, informar a situação e registrar observações para a análise administrativa.</p><p class="legal-reference"><strong>Fundamento legal:</strong> <a href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/decreto/d10692.htm#art5" target="_blank" rel="noreferrer">art. 5º do Decreto nº 10.692/2021 ↗</a></p></div></div>
+              <div class="obligation-summary" aria-live="polite"><div class="br-card"><span>Obrigações concluídas</span><strong id="obligations-complete">0/7</strong><small>com documento e situação concluída</small></div><div class="br-card"><span>Em andamento</span><strong id="obligations-progress">0</strong><small>itens com providência iniciada</small></div><div class="br-card"><span>Pendentes</span><strong id="obligations-pending">7</strong><small>itens que ainda precisam de atenção</small></div></div>
+              <div class="obligation-list" id="obligation-list"></div>
+              <div class="workspace-actions obligation-actions"><button class="br-button secondary" type="button" id="back-confirmation">← Voltar à confirmação</button><button class="br-button secondary" type="button" id="back-public-after-obligations">Voltar à consulta pública</button><button class="br-button primary" type="button" id="save-obligations-demo">Salvar atualização <span aria-hidden="true">→</span></button></div>
             </section>
           </div>
           <div class="readonly-workspace br-card" id="readonly-workspace" hidden><div class="workspace-card-head"><div><span class="eyebrow">PAINEL DE ACOMPANHAMENTO</span><h3 id="readonly-title">Visão de acompanhamento</h3><p id="readonly-copy">Dados exibidos conforme o escopo institucional autorizado.</p></div><span class="br-tag info-tag">Somente leitura</span></div><div class="readonly-metrics"><div><strong>2.095</strong><span>indicados</span></div><div><strong>5</strong><span>cadastrados</span></div><div><strong>50</strong><span>em preenchimento</span></div><div><strong>API</strong><span>dados abertos</span></div></div><div class="readonly-actions"><button class="br-button secondary small" type="button" data-scroll="transparencia">Abrir mapa nacional</button><button class="br-button secondary small" type="button" id="export-role-data">Exportar visão autorizada ↓</button></div></div>
@@ -190,8 +197,8 @@
     <div class="br-modal" id="demo-modal" hidden><div class="modal-scrim"></div><div class="modal-content br-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="br-button circle modal-close" type="button" id="modal-close" aria-label="Fechar">×</button><span class="eyebrow">PROTÓTIPO</span><h2 id="modal-title">Ação simulada</h2><p id="modal-copy">Nenhum dado foi enviado. A versão integrada conectará esta ação ao serviço institucional.</p><button class="br-button primary" type="button" id="modal-ok">Entendi</button></div></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="data/indicados-2095.js?v=20260826-prototipo-6"></script>
+    <script src="data/indicados-2095.js?v=20260826-prototipo-7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@govbr-ds/core@3.7.0/dist/core.min.js"></script>
-    <script src="app.js?v=20260826-prototipo-6"></script>
+    <script src="app.js?v=20260826-prototipo-7"></script>
   </body>
 </html>

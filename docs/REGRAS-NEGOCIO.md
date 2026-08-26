@@ -94,6 +94,10 @@ Para municípios inscritos, o painel deve acompanhar os documentos e prazos rela
 
 Cada obrigação deve possuir situação, documento, data de referência, prazo, responsável, observação e histórico de alterações.
 
+No protótipo, a tela de confirmação do envio oferece a ação **Simular efetivação e abrir obrigações** para demonstrar a jornada seguinte. A situação exibida na confirmação continua sendo “Enviado para análise”; em produção, o painel somente deve ser liberado após decisão de efetivação registrada pela autoridade competente.
+
+O painel pós-cadastro deve permitir ao município consultar cada obrigação, anexar o documento comprobatório, indicar sua situação e registrar observações. A alteração deve gerar nova versão e evento de auditoria, sem apagar a versão anterior.
+
 ### RN10 — Transparência e dados públicos
 
 1. A consulta pública deve diferenciar indicação, preenchimento, análise e cadastro efetivado.

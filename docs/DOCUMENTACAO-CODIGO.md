@@ -57,6 +57,14 @@ Depois que a validação da etapa 4 é concluída, `setupProfiles()` oculta o el
 
 No protótipo, essa mensagem não dispara uma comunicação real. Na produção, a API deverá criar o protocolo, persistir o evento, enfileirar a notificação e registrar sucesso ou falha da entrega sem bloquear a consulta do protocolo pelo município.
 
+### 4.2. Painel pós-cadastro e documentos obrigatórios
+
+Na tela de confirmação, o botão `#open-obligations-demo` permite simular a efetivação do cadastro e abrir o painel `#obligations-workspace`. A separação é intencional: o envio ainda representa a situação **Em análise**; a efetivação é uma decisão administrativa que, no sistema real, deverá liberar o painel para o município cadastrado.
+
+As sete obrigações são definidas em `obligationDefinitions` no `app.js` e renderizadas por `renderObligationCards()`. Cada item possui campo de upload, situação (`Não iniciado`, `Em andamento` ou `Concluído`) e observação. `updateObligationSummary()` atualiza os indicadores 0/7, andamento e pendências. Os botões `Usar arquivo demonstrativo` criam arquivos locais apenas para permitir a apresentação do fluxo sem transmitir conteúdo.
+
+Na implementação, o painel deve ser retornado pela API somente quando o usuário estiver autorizado para o município e o processo estiver efetivado. Os sete documentos, metadados, prazos, responsáveis, versões, hashes e alterações devem ser persistidos e auditados; a interface do protótipo não substitui o armazenamento institucional nem a validação administrativa.
+
 ## 5. Perfis e autenticação simulada
 
 `profiles` contém os quatro perfis demonstrados: Município, Estado, União e Controle e fiscalização. A função `setupProfiles()` atualiza o escopo, as permissões e o painel exibido.
@@ -69,6 +77,8 @@ Na produção, o botão `Continuar com gov.br` deverá ser substituído pelo flu
 
 - `formal-act-file`: ato formal que designa o representante municipal;
 - `risk-file`: comprovação da existência de áreas de risco.
+
+Os campos pós-cadastro são gerados por `setupObligations()` a partir de `obligationDefinitions`. Cada `obligation-file` permanece no navegador durante a demonstração e atualiza a linha correspondente; os selects `obligation-state-*` alimentam os indicadores do painel.
 
 No protótipo, o arquivo permanece apenas no navegador e seu nome é apresentado na tela. Na produção, a API deverá receber o arquivo por conexão autenticada, validar extensão e tamanho, verificar antivírus, gerar hash, registrar metadados, versionar o documento e armazená-lo em repositório institucional.
 

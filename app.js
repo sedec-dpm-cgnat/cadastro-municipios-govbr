@@ -13,6 +13,16 @@ let currentMapFilter = 'all';
 let currentWizardStep = 1;
 const demoMunicipalityCode = '3550704';
 
+const obligationDefinitions = [
+  { id: 1, title: 'Instituir órgão municipal de defesa civil', description: 'Comprovar a instituição e o funcionamento do órgão municipal de proteção e defesa civil.' },
+  { id: 2, title: 'Mapeamento georreferenciado das áreas suscetíveis', description: 'Anexar mapa com limites georreferenciados das áreas suscetíveis a deslizamentos, inundações bruscas ou processos correlatos.' },
+  { id: 3, title: 'Plano de contingência de proteção e defesa civil', description: 'Anexar o plano de contingência municipal no prazo de um ano contado da inclusão no Cadastro Nacional.' },
+  { id: 4, title: 'Plano de implantação de obras e serviços', description: 'Registrar o plano de implantação de obras e serviços para a redução de riscos de desastre.' },
+  { id: 5, title: 'Mecanismos de controle e fiscalização', description: 'Comprovar mecanismos para evitar edificações em áreas suscetíveis e fiscalizar sua aplicação.' },
+  { id: 6, title: 'Carta geotécnica de aptidão à urbanização', description: 'Anexar a carta geotécnica e as diretrizes urbanísticas para novos parcelamentos e uso do solo.' },
+  { id: 7, title: 'Atualização anual do Cadastro Nacional', description: 'Registrar anualmente a evolução das ocupações em áreas suscetíveis e manter os dados atualizados.' }
+];
+
 const profiles = {
   municipal: {
     title: 'Município',
@@ -126,9 +136,68 @@ function setWizardStep(step) {
   updateWizardValidation(false);
 }
 
+function obligationStatusLabel(value) {
+  return { 'not-started': 'Não iniciado', 'in-progress': 'Em andamento', complete: 'Concluído' }[value] || 'Não iniciado';
+}
+
+function renderObligationCards() {
+  const list = $('#obligation-list');
+  list.innerHTML = obligationDefinitions.map(obligation => `<article class="obligation-card br-card" data-obligation-id="${obligation.id}">
+    <div class="obligation-card-head"><div class="obligation-number" aria-hidden="true">${obligation.id}</div><div class="obligation-title"><h4>${obligation.title}</h4><p>${obligation.description}</p></div><span class="br-tag neutral-tag obligation-status">Não iniciado</span></div>
+    <div class="obligation-fields"><div class="br-upload obligation-upload"><label class="upload-label" for="obligation-file-${obligation.id}">Documento comprobatório</label><input class="upload-input obligation-file" id="obligation-file-${obligation.id}" data-obligation-id="${obligation.id}" type="file" accept=".pdf,.zip,.geojson,.json,.shp,.gpkg,.doc,.docx,.odt" /><p class="upload-hint">Anexe PDF, ZIP ou formato geoespacial compatível. O documento ficará vinculado à obrigação e à versão do cadastro.</p><button class="br-button secondary small demo-file-button" type="button" data-obligation-demo="${obligation.id}">Usar arquivo demonstrativo</button><div class="file-list obligation-file-list" aria-live="polite"></div></div><div class="obligation-controls"><div class="br-input"><label for="obligation-state-${obligation.id}">Situação</label><select id="obligation-state-${obligation.id}" class="obligation-state" data-obligation-id="${obligation.id}"><option value="not-started">Não iniciado</option><option value="in-progress">Em andamento</option><option value="complete">Concluído</option></select></div><div class="br-input"><label for="obligation-note-${obligation.id}">Observação</label><textarea id="obligation-note-${obligation.id}" rows="3" placeholder="Inclua prazo, responsável ou observação relevante."></textarea></div></div></div>
+  </article>`).join('');
+}
+
+function updateObligationSummary() {
+  const states = $$('.obligation-state').map(select => select.value);
+  const complete = states.filter(value => value === 'complete').length;
+  const progress = states.filter(value => value === 'in-progress').length;
+  $('#obligations-complete').textContent = `${complete}/7`;
+  $('#obligations-progress').textContent = String(progress);
+  $('#obligations-pending').textContent = String(states.filter(value => value === 'not-started').length);
+  $$('.obligation-card').forEach(card => {
+    const select = card.querySelector('.obligation-state');
+    const status = card.querySelector('.obligation-status');
+    const value = select.value;
+    status.textContent = obligationStatusLabel(value);
+    status.className = `br-tag obligation-status ${value === 'complete' ? 'success-tag' : value === 'in-progress' ? 'info-tag' : 'neutral-tag'}`;
+  });
+}
+
+function setDemoObligationFile(id) {
+  const input = $(`#obligation-file-${id}`);
+  const definition = obligationDefinitions.find(item => item.id === id);
+  const demoFile = new File([`Arquivo demonstrativo da obrigação: ${definition.title}.`], `obrigacao-${String(id).padStart(2, '0')}-demo.pdf`, { type: 'application/pdf' });
+  const transfer = new DataTransfer();
+  transfer.items.add(demoFile);
+  input.files = transfer.files;
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function setupObligations() {
+  renderObligationCards();
+  $$('.obligation-file').forEach(input => input.addEventListener('change', event => {
+    const files = [...event.target.files];
+    const list = event.target.closest('.obligation-upload').querySelector('.obligation-file-list');
+    list.textContent = files.length ? files.map(file => `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`).join(' | ') : '';
+  }));
+  $$('[data-obligation-demo]').forEach(button => button.addEventListener('click', () => setDemoObligationFile(Number(button.dataset.obligationDemo))));
+  $$('.obligation-state').forEach(select => select.addEventListener('change', updateObligationSummary));
+  updateObligationSummary();
+}
+
+function openObligationsDemo() {
+  $('#submission-confirmation').hidden = true;
+  $('#obligations-workspace').hidden = false;
+  $('#wizard-status').textContent = 'Cadastro efetivado · simulação';
+  updateObligationSummary();
+  $('#obligations-workspace').focus();
+}
+
 function resetMunicipalWizard() {
   $('#municipal-wizard').hidden = false;
   $('#submission-confirmation').hidden = true;
+  $('#obligations-workspace').hidden = true;
   $('#municipal-responsible').value = '';
   $('#formal-act-file').value = '';
   $('#risk-file').value = '';
@@ -164,7 +233,11 @@ function setupMunicipalWizard() {
   $('#previous-review').addEventListener('click', () => setWizardStep(3));
   $('#reset-demo').addEventListener('click', resetMunicipalWizard);
   $('#restart-after-submit').addEventListener('click', resetMunicipalWizard);
+  $('#open-obligations-demo').addEventListener('click', openObligationsDemo);
   $('#return-public-after-submit').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
+  $('#back-confirmation').addEventListener('click', () => { $('#obligations-workspace').hidden = true; $('#submission-confirmation').hidden = false; $('#wizard-status').textContent = 'Enviado para análise'; $('#submission-confirmation').focus(); });
+  $('#back-public-after-obligations').addEventListener('click', () => { $('#workspace').hidden = true; scrollToSection('transparencia'); });
+  $('#save-obligations-demo').addEventListener('click', () => openModal('Atualização salva', 'A simulação atualizou somente a interface. Na versão integrada, cada documento, situação e observação será versionado com data, usuário, hash e trilha de auditoria.'));
   $('#municipal-responsible').addEventListener('input', () => { updateWizardValidation(false); updateReviewSummary(); });
   $('#attestation').addEventListener('change', () => updateWizardValidation(false));
   setWizardStep(1);
@@ -359,4 +432,4 @@ async function loadNationalMap() {
 
 function setupMapControls() { $$('[data-map-filter]').forEach(button => button.addEventListener('click', () => applyMapFilter(button.dataset.mapFilter))); }
 
-document.addEventListener('DOMContentLoaded', () => { setupShell(); setupProfiles(); setupUpload(); setupMapControls(); loadNationalMap(); });
+document.addEventListener('DOMContentLoaded', () => { setupShell(); setupProfiles(); setupUpload(); setupObligations(); setupMapControls(); loadNationalMap(); });
