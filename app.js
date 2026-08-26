@@ -189,6 +189,8 @@ function setupObligations() {
 function openObligationsDemo() {
   $('#submission-confirmation').hidden = true;
   $('#obligations-workspace').hidden = false;
+  $('#municipal-workspace-title').textContent = 'Acompanhamento do município cadastrado';
+  $('#municipal-workspace-copy').textContent = 'Consulte e atualize as obrigações previstas para o município após a efetivação do cadastro.';
   $('#wizard-status').textContent = 'Cadastro efetivado · simulação';
   updateObligationSummary();
   $('#obligations-workspace').focus();
@@ -198,6 +200,8 @@ function resetMunicipalWizard() {
   $('#municipal-wizard').hidden = false;
   $('#submission-confirmation').hidden = true;
   $('#obligations-workspace').hidden = true;
+  $('#municipal-workspace-title').textContent = 'Cadastro inicial em quatro etapas';
+  $('#municipal-workspace-copy').textContent = 'Fluxo desenhado com o componente Wizard do Design System. Avance somente quando os requisitos da etapa estiverem atendidos.';
   $('#municipal-responsible').value = '';
   $('#formal-act-file').value = '';
   $('#risk-file').value = '';
